@@ -2,10 +2,11 @@
 
 namespace hunomina\Routing;
 
+use hunomina\Http\Response\HtmlResponse;
 use hunomina\Http\Response\Response;
-use hunomina\Routing\RouteManager\JsonRouteManager;
-use hunomina\Routing\RouteManager\RouteManager;
-use hunomina\Routing\RouteManager\YamlRouteManager;
+use hunomina\Routing\RouteManager\{
+    JsonRouteManager, RouteManager, YamlRouteManager
+};
 
 class Router
 {
@@ -14,6 +15,12 @@ class Router
 
     /** @var RouteManager $_route_manager */
     protected $_route_manager;
+
+    /** @var array<callable> $_pre_middleware */
+    protected $_pre_middleware = [];
+
+    /** @var array<callable> $_post_middleware */
+    protected $_post_middleware = [];
 
     /**
      * Router constructor.
@@ -40,21 +47,92 @@ class Router
         }
     }
 
-    public function request(string $method, string $url): ?Response
+    /**
+     * @param string $method
+     * @param string $url
+     * @return Response
+     */
+    public function request(string $method, string $url): Response
     {
         $routes = $this->_route_manager->getRoutes();
+        $method = strtoupper($method);
+
+        $notFoundResponse = new HtmlResponse('404 Not Found');
+        $notFoundResponse->setHttpCode(404);
+
         /** @var Route $route */
         foreach ($routes as $route) {
-            if ($route->match(strtoupper($method), $url)) {
-                return $route->call($url);
+            if ($route->match($method, $url)) {
+
+                foreach ($this->_pre_middleware as $middleware) {
+                    if ($middleware($method, $url) !== true) {
+                        return $notFoundResponse;
+                    }
+                }
+
+                $response = $route->call($url);
+
+                foreach ($this->_post_middleware as $middleware) {
+                    if ($middleware($response) !== true) {
+                        return $notFoundResponse;
+                    }
+                }
+
+                return $response;
             }
         }
 
-        return null;
+        return $notFoundResponse;
     }
 
     public function getRouteManager(): RouteManager
     {
         return $this->_route_manager;
+    }
+
+    /**
+     * @param array $middlewares
+     * @return Router
+     * @throws RoutingException
+     */
+    public function setPreMiddleware(array $middlewares): self
+    {
+        foreach ($middlewares as $middleware) {
+            if (!\is_callable($middleware)) {
+                throw new RoutingException('A middleware must be callable and return a boolean');
+            }
+        }
+
+        $this->_pre_middleware = $middlewares;
+        return $this;
+    }
+
+    /**
+     * @param array $middlewares
+     * @return Router
+     * @throws RoutingException
+     */
+    public function setPostMiddleware(array $middlewares): self
+    {
+        foreach ($middlewares as $middleware) {
+            if (!\is_callable($middleware)) {
+                throw new RoutingException('A middleware must be callable and take a Response object as parameter');
+            }
+        }
+
+        $this->_post_middleware = $middlewares;
+        return $this;
+    }
+
+    public function addPreMiddleware(callable $middleware): self
+    {
+        $this->_pre_middleware[] = $middleware;
+        return $this;
+    }
+
+    public function addPostMiddleware(callable $middleware): self
+    {
+        $this->_post_middleware[] = $middleware;
+        return $this;
     }
 }
