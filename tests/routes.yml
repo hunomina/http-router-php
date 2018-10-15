@@ -1,0 +1,11 @@
+- url: /test
+  methods: get
+  action: TestController::index
+
+- url: /test/[0-9]+
+  methods: [GET, post]
+  action: TestController::get
+
+- url: /test/[0-9]+/[a-zA-Z]+
+  methods: [GET, post]
+  action: TestController::get2
