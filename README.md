@@ -1,1 +1,38 @@
 # Http Router PHP
+
+Description : Implementation of Http Router classes for PHP7.1 or higher.
+
+This library is mainly composed of 4 classes.
+
+## Router
+
+The Router *(hunomina\Routing\Router)* class handles request by calling the *request(string $method, string $url)* method which must return a route action response.
+
+Can be instantiate by passing a route file and a type (json, yaml... extend if you wanna add new ones).
+
+Example of route files in the */tests* folder.
+
+## RouteManager
+
+The RouteManager *(hunomina\Routing\RouteManager\RouteManager)* parses route files. You can then get Route objects by calling the *getRoutes()* method.
+
+This class is *final*, so you have to extend it in order to add new route file types (See *hunomina\Routing\RouteManager\JsonRouteManager* or *hunomina\Routing\RouteManager\YamlRouteManager* for examples).
+
+## Route
+
+A Route (hunomina\Routing\Route) object is composed of these attributes :
+
+- *array* $_methods : An array of HTTP methods handled by the route
+- *string* $_url : A pseudo regexp representing the urls handled by the route
+- *array* $_action : A two items array. The first is the FQN of a class (namespaces separated by ':'). The second one is the name of the method you want to call for this route. When setting the action attribute you have to pass a string which respects this syntax classname::method.
+
+Finally, the Route::call() method has to return a hunomina\Http\Response\Response object.
+
+## Response
+
+A Response (hunomina\Http\Response\Response) object is composed of :
+
+- *array* $_headers : An array of HTTP headers
+- *string* $_content : Content of the response
+
+The class is *final*, so you have to extend in order to add new response types
