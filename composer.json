@@ -1,0 +1,27 @@
+{
+  "name": "hunomina/http-router-php",
+  "description": "Implementation of Http Router classes for PHP7.1 or higher",
+  "type": "library",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "hunomina",
+      "email": "hugo.f972@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": "^7.1",
+    "ext-json": "*",
+    "symfony/yaml": "^4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7"
+  },
+  "autoload": {
+    "psr-4": {
+      "hunomina\\Routing\\": "src/Routing/",
+      "hunomina\\Http\\": "src/Http/"
+    }
+  }
+}
