@@ -18,7 +18,7 @@ Example of route files in the */tests* folder.
 
 The RouteManager *([hunomina\Routing\RouteManager\RouteManager](https://github.com/hunomina/http-router-php/blob/master/src/Routing/RouteManager/RouteManager.php))* parses route files. You can then get Route objects by calling the *getRoutes()* method.
 
-This class is *final*, so you have to extend it in order to add new route file types
+This class is *abstract*, so you have to extend it in order to add new route file types
 (See *[hunomina\Routing\RouteManager\JsonRouteManager](https://github.com/hunomina/http-router-php/blob/master/src/Routing/RouteManager/JsonRouteManager.php)* or *[hunomina\Routing\RouteManager\YamlRouteManager](https://github.com/hunomina/http-router-php/blob/master/src/Routing/RouteManager/YamlRouteManager.php)* for examples).
 
 ## Route
