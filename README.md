@@ -1,5 +1,7 @@
 # Http Router PHP
 
+[![Build Status](https://travis-ci.com/hunomina/http-router-php.svg?branch=master)](https://travis-ci.com/hunomina/http-router-php)
+
 Description : Implementation of Http Router classes for PHP7.1 or higher.
 
 This library is mainly composed of 4 classes.
