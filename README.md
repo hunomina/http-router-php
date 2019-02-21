@@ -38,4 +38,4 @@ A Response ([hunomina\Http\Response\Response](https://github.com/hunomina/http-r
 - *array* $_headers : An array of HTTP headers
 - *string* $_content : Content of the response
 
-The class is *final*, so you have to extend in order to add new response types
+The class is *abstract*, so you have to extend in order to add new response types
