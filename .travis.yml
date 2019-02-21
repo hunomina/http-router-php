@@ -1,6 +1,3 @@
-env:
-  - CODECOV_TOKEN="d01ba737-9574-47e4-b9aa-8e927c5dd1e6"
-
 language: php
 
 php:
@@ -11,7 +8,4 @@ before_script:
   - travis_retry composer install --no-interaction --prefer-source --dev
 
 script:
-  - php vendor/bin/phpunit --coverage-clover=coverage.xml tests
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - php vendor/bin/phpunit tests
