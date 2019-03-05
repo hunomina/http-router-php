@@ -4,9 +4,7 @@ namespace hunomina\Routing;
 
 use hunomina\Http\Response\HtmlResponse;
 use hunomina\Http\Response\Response;
-use hunomina\Routing\RouteManager\{
-    JsonRouteManager, RouteManager, YamlRouteManager
-};
+use hunomina\Routing\RouteManager\{JsonRouteManager, RouteManager, YamlRouteManager};
 
 class Router
 {
@@ -134,5 +132,43 @@ class Router
     {
         $this->_post_middleware[] = $middleware;
         return $this;
+    }
+
+    /**
+     * @param string $routeName
+     * @param array $params
+     * @param string $method
+     * @return string
+     * @throws RoutingException
+     */
+    public function generate(string $routeName, array $params = [], string $method = 'GET'): string
+    {
+        $method = strtoupper($method);
+        $routes = $this->_route_manager->getRoutes();
+
+        /** @var Route $route */
+        foreach ($routes as $route) {
+            if ($route->getName() === $routeName && in_array($method, $route->getMethods(), true)) {
+
+                $url = $route->getUrl();
+                preg_match_all(Route::URL_PARAMS_REGEX, $url, $urlParams); // get parameters from route url
+                $urlParams = $urlParams[0];
+
+                if (count($urlParams) === count($params)) {
+                    foreach ($urlParams as $i => $param) {
+                        if (!preg_match('/' . $param . '/', $params[$i])) {
+                            throw new RoutingException('Invalid paramter type');
+                        }
+
+                        $pattern = '/' . preg_quote($param, '/') . '/';
+                        $url = preg_replace($pattern, $params[$i], $url, 1);
+                    }
+                    return $url;
+                }
+
+                throw new RoutingException('You must pass as many parameter as needed in the route url : ' . count($urlParams));
+            }
+        }
+        throw new RoutingException("The '" . $routeName . "' route does not exist");
     }
 }
