@@ -47,24 +47,28 @@ abstract class RouteManager
      */
     protected function getRouteFromArray(array $route): Route
     {
-        $url = $route['url'];
-        $methods = $route['methods'];
-        $action = $route['action'];
+        if (isset($route['url'], $route['methods'], $route['action'], $route['name'])) {
 
-        if ($url && $methods && $action && \is_string($url) && (\is_string($methods) || \is_array($methods)) && \is_string($action)) {
-            if (\is_array($methods)) {
-                foreach ($methods as &$method) {
-                    if (\is_string($method)) {
-                        $method = strtoupper($method);
-                    } else {
-                        throw new RoutingException('Methods can only be string');
+            $url = $route['url'];
+            $methods = $route['methods'];
+            $action = $route['action'];
+            $name = $route['name'];
+
+            if (\is_string($url) && (\is_string($methods) || \is_array($methods)) && \is_string($action) && is_string($name)) {
+                if (\is_array($methods)) {
+                    foreach ($methods as &$method) {
+                        if (\is_string($method)) {
+                            $method = strtoupper($method);
+                        } else {
+                            throw new RoutingException('Methods can only be string');
+                        }
                     }
+                } else {
+                    $methods = [strtoupper($methods)];
                 }
-            } else {
-                $methods = [strtoupper($methods)];
-            }
 
-            return new Route($url, $methods, $action);
+                return new Route($url, $methods, $action, $name);
+            }
         }
 
         throw new RoutingException('The route configuration is invalid');

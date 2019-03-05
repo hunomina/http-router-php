@@ -17,15 +17,16 @@ class YamlRouteManager extends RouteManager
     public function __construct(string $route_file)
     {
         if ($content = file_get_contents($route_file)) {
-
             try {
                 $routes = Yaml::parseFile($route_file);
+                foreach ($routes as $name => &$route) {
+                    $route['name'] = $name;
+                }
+                unset($route);
                 $this->_routes = $this->getRoutesFromArray($routes);
             } catch (ParseException $e) {
                 throw new RoutingException('This file can not be used for routing');
             }
-
-            // $this->_routes = $this->getRoutesFromArray($routes);
         } else {
             throw new RoutingException('This file can not be used for routing');
         }
