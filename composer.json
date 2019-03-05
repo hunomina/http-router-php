@@ -21,7 +21,8 @@
   "autoload": {
     "psr-4": {
       "hunomina\\Routing\\": "src/Routing/",
-      "hunomina\\Http\\": "src/Http/"
+      "hunomina\\Http\\": "src/Http/",
+      "hunomina\\Routing\\Test\\": "tests/"
     }
   }
 }
