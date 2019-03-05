@@ -12,6 +12,8 @@ The Router *([hunomina\Routing\Router](https://github.com/hunomina/http-router-p
 
 Can be instantiate by passing a route file and a type (json, yaml... extend if you wanna add new ones).
 
+The Router::request(*$method*, *$url*) method allows to execute a route action based on the method and the url parameters.
+
 Example of route files in the */tests* folder.
 
 ## RouteManager
@@ -26,10 +28,11 @@ This class is *abstract*, so you have to extend it in order to add new route fil
 A Route ([hunomina\Routing\Route](https://github.com/hunomina/http-router-php/blob/master/src/Routing/Route.php)) object is composed of these attributes :
 
 - *array* $_methods : An array of HTTP methods handled by the route
-- *string* $_url : A pseudo regexp representing the urls handled by the route
+- *string* $_url : The url of the route
+- *string* $_pattern : A regexp representing the urls handled by the route
 - *array* $_action : A two items array. The first is the FQN of a class (namespaces separated by ':'). The second one is the name of the method you want to call for this route. When setting the action attribute you have to pass a string which respects this syntax classname::method.
 
-Finally, the Route::call() method has to return a [hunomina\Http\Response\Response](https://github.com/hunomina/http-router-php/blob/master/src/Http/Response/Response.php) object.
+Finally, the Route::call() method execute the route action which has to return a [hunomina\Http\Response\Response](https://github.com/hunomina/http-router-php/blob/master/src/Http/Response/Response.php) object.
 
 ## Response
 
