@@ -6,9 +6,11 @@ use hunomina\Http\Response\Response;
 
 class Route
 {
+    public const URL_PARAMS_REGEX = '/\[[^\[\]]+\](?:[+*]|{\d+,?\d*})?/';
+
     /**
      * @var string $_url
-     * Regexp representing the url of the route, with '/' not escaped
+     * Url of the route
      */
     private $_url;
 
@@ -26,6 +28,12 @@ class Route
      * Route name
      */
     private $_name;
+
+    /**
+     * @var string $_pattern
+     * Regexp representing the url of the route, with '/' not escaped
+     */
+    private $_pattern;
 
     /**
      * Route constructor.
@@ -64,13 +72,13 @@ class Route
          * This regex can be used to capture pseudo regex parameters
          */
 
-        $url = str_replace('/', '\/', $url);
-        $url = '/^' . $url . '$/';
-
-        $paramRegex = '/\[[^\[\]]+\](?:[+*]|{\d+,?\d*})?/';
-        $url = preg_replace($paramRegex, '($0)', $url);
-
         $this->_url = $url;
+
+        $pattern = str_replace('/', '\/', $url);
+        $pattern = '/^' . $pattern . '$/';
+        $pattern = preg_replace(self::URL_PARAMS_REGEX, '($0)', $pattern);
+
+        $this->_pattern = $pattern;
         return $this;
     }
 
@@ -108,6 +116,14 @@ class Route
     public function getAction(): array
     {
         return $this->_action;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPattern(): string
+    {
+        return $this->_pattern;
     }
 
     /**
@@ -162,7 +178,7 @@ class Route
     public function match(string $method, string $url): bool
     {
         if (\in_array($method, $this->_methods, true)) {
-            return preg_match($this->_url, $url);
+            return preg_match($this->_pattern, $url);
         }
 
         return false;
@@ -170,7 +186,7 @@ class Route
 
     public function call(string $url): Response
     {
-        preg_match($this->_url, $url, $params);
+        preg_match($this->_pattern, $url, $params);
         unset($params[0]); // unset the whole match to only get the parameters
 
         $action = [new $this->_action[0](), $this->_action[1]];
