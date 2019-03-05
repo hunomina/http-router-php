@@ -22,18 +22,26 @@ class Route
     private $_action;
 
     /**
+     * @var string $_name
+     * Route name
+     */
+    private $_name;
+
+    /**
      * Route constructor.
      * @param string $url
      * @param array $methods
      * @param string $action
+     * @param string $name
      * @throws RoutingException
      * @throws \ReflectionException
      */
-    public function __construct(string $url, array $methods, string $action)
+    public function __construct(string $url, array $methods, string $action, string $name)
     {
         $this->setUrl($url)
             ->setMethods($methods)
-            ->setAction($action);
+            ->setAction($action)
+            ->setName($name);
     }
 
     /**
@@ -59,7 +67,7 @@ class Route
         $url = str_replace('/', '\/', $url);
         $url = '/^' . $url . '$/';
 
-        $paramRegex = '/\[[^\[\]]+\](?:[+*]|\{\d+,?\d*\})?/';
+        $paramRegex = '/\[[^\[\]]+\](?:[+*]|{\d+,?\d*})?/';
         $url = preg_replace($paramRegex, '($0)', $url);
 
         $this->_url = $url;
@@ -133,6 +141,22 @@ class Route
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->_name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->_name = $name;
     }
 
     public function match(string $method, string $url): bool
