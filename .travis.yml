@@ -10,8 +10,4 @@ before_script:
   - travis_retry composer install --no-interaction --prefer-source
 
 script:
-<<<<<<< HEAD
   - php vendor/bin/phpunit --bootstrap vendor/autoload.php tests
-=======
-  - php vendor/bin/phpunit tests
->>>>>>> 1648f47499158f9b4d4238c488adc63ba4a42f06
