@@ -1,7 +1,5 @@
 <?php
 
-require __DIR__ . '/TestController.php';
-
 use hunomina\Http\Response\HtmlResponse;
 use hunomina\Http\Response\JsonResponse;
 use hunomina\Routing\Route;

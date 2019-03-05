@@ -1,17 +1,20 @@
 [
   {
+    "name": "test",
     "url": "/test",
     "methods": "get",
-    "action": "TestController::index"
+    "action": "hunomina:Routing:Test:TestController::index"
   },
   {
+    "name": "test-int",
     "url": "/test/[0-9]+",
     "methods": ["GET", "post"],
-    "action": "TestController::get"
+    "action": "hunomina:Routing:Test:TestController::get"
   },
   {
+    "name": "test-double-int",
     "url": "/test/[0-9]+/[a-zA-Z]*",
     "methods": ["GET", "post"],
-    "action": "TestController::get2"
+    "action": "hunomina:Routing:Test:SecondTestController::get2"
   }
 ]
