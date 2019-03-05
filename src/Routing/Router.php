@@ -8,6 +8,9 @@ use hunomina\Routing\RouteManager\{JsonRouteManager, RouteManager, YamlRouteMana
 
 class Router
 {
+    /** @var string $_type */
+    protected $_type;
+
     /** @var string $route_file */
     protected $_route_file;
 
@@ -27,19 +30,19 @@ class Router
      * @throws RoutingException
      * @throws \ReflectionException
      */
-    public function __construct(string $route_file, string $type = 'json')
+    public function __construct(string $route_file, string $type = 'yaml')
     {
         if (file_exists($route_file)) {
 
             $this->_route_file = $route_file;
-            switch ($type) {
-                case 'yaml':
-                    $this->_route_manager = new YamlRouteManager($route_file);
-                    break;
-                default: // default and json
-                    $this->_route_manager = new JsonRouteManager($route_file);
-                    break;
+            $this->_type = $type;
+
+            if ($type === 'json') {
+                $this->_route_manager = new JsonRouteManager($route_file);
+            } else {
+                $this->_route_manager = new YamlRouteManager($route_file);
             }
+
         } else {
             throw new RoutingException('The route file does not exist');
         }
