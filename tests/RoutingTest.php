@@ -6,7 +6,7 @@ use hunomina\Routing\Route;
 use hunomina\Routing\Router;
 use PHPUnit\Framework\TestCase;
 
-final class RoutingTest extends TestCase
+class RoutingTest extends TestCase
 {
     private const JSON_ROUTE_FILE = __DIR__ . '/routes.json';
     private const YAML_ROUTE_FILE = __DIR__ . '/routes.yml';

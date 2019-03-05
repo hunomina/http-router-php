@@ -8,7 +8,7 @@ test-int:
   methods: [GET, post]
   action: hunomina:Routing:Test:TestController::get
 
-test-double-int:
+test-double-param:
   url: /test/[0-9]+/[a-zA-Z]+
   methods: [GET, post]
   action: hunomina:Routing:Test:SecondTestController::get2
