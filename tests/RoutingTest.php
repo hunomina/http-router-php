@@ -17,7 +17,7 @@ class RoutingTest extends TestCase
      */
     public function testInstanciateJsonRouter(): void
     {
-        $router = new Router(self::JSON_ROUTE_FILE);
+        $router = new Router(self::JSON_ROUTE_FILE, 'json');
 
         $this->assertInstanceOf(Router::class, $router);
         $this->assertContainsOnly(Route::class, $router->getRouteManager()->getRoutes());
@@ -29,7 +29,7 @@ class RoutingTest extends TestCase
      */
     public function testInstanciateYamlRouter(): void
     {
-        $router = new Router(self::YAML_ROUTE_FILE, 'yaml');
+        $router = new Router(self::YAML_ROUTE_FILE);
 
         $this->assertInstanceOf(Router::class, $router);
         $this->assertContainsOnly(Route::class, $router->getRouteManager()->getRoutes());
@@ -41,7 +41,7 @@ class RoutingTest extends TestCase
      */
     public function testMatchJsonRoute(): void
     {
-        $router = new Router(self::JSON_ROUTE_FILE);
+        $router = new Router(self::JSON_ROUTE_FILE, 'json');
 
         $method = 'get';
         $url = '/test';
@@ -59,7 +59,7 @@ class RoutingTest extends TestCase
      */
     public function testMatchYamlRoute(): void
     {
-        $router = new Router(self::YAML_ROUTE_FILE, 'yaml');
+        $router = new Router(self::YAML_ROUTE_FILE);
 
         $method = 'get';
         $url = '/test';

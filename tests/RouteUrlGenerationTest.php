@@ -21,7 +21,7 @@ class RouteUrlGenerationTest extends TestCase
      */
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
-        $this->_router = new Router(self::YAML_ROUTE_FILE, 'yaml');
+        $this->_router = new Router(self::YAML_ROUTE_FILE);
         parent::__construct($name, $data, $dataName);
     }
 
