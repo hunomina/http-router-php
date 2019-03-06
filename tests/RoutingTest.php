@@ -21,6 +21,7 @@ class RoutingTest extends TestCase
 
         $this->assertInstanceOf(Router::class, $router);
         $this->assertContainsOnly(Route::class, $router->getRouteManager()->getRoutes());
+        $this->assertCount(3, $router->getRouteManager()->getRoutes());
     }
 
     /**
@@ -33,6 +34,7 @@ class RoutingTest extends TestCase
 
         $this->assertInstanceOf(Router::class, $router);
         $this->assertContainsOnly(Route::class, $router->getRouteManager()->getRoutes());
+        $this->assertCount(3, $router->getRouteManager()->getRoutes());
     }
 
     /**
