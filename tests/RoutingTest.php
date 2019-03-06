@@ -33,7 +33,7 @@ class RoutingTest extends TestCase
         $router = new Router(self::YAML_ROUTE_FILE);
 
         $this->assertInstanceOf(Router::class, $router);
-        $this->assertContainsOnly(Route::class, $router->getRouteManager()->getRoutes());
+        $this->assertContainsOnlyInstancesOf(Route::class, $router->getRouteManager()->getRoutes());
         $this->assertCount(3, $router->getRouteManager()->getRoutes());
     }
 
