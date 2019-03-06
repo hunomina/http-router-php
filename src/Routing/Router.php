@@ -23,6 +23,9 @@ class Router
     /** @var array<callable> $_post_middleware */
     protected $_post_middleware = [];
 
+    /** @var string $_notFoundUrl */
+    protected $_notFoundUrl = '/404';
+
     /**
      * Router constructor.
      * @param string $route_file
@@ -48,6 +51,75 @@ class Router
         }
     }
 
+    public function getRouteManager(): RouteManager
+    {
+        return $this->_route_manager;
+    }
+
+    /**
+     * @param array $middlewares
+     * @return Router
+     * @throws RoutingException
+     */
+    public function setPreMiddleware(array $middlewares): Router
+    {
+        foreach ($middlewares as $middleware) {
+            if (!\is_callable($middleware)) {
+                throw new RoutingException('A middleware must be callable and return a boolean');
+            }
+        }
+
+        $this->_pre_middleware = $middlewares;
+        return $this;
+    }
+
+    /**
+     * @param array $middlewares
+     * @return Router
+     * @throws RoutingException
+     */
+    public function setPostMiddleware(array $middlewares): Router
+    {
+        foreach ($middlewares as $middleware) {
+            if (!\is_callable($middleware)) {
+                throw new RoutingException('A middleware must be callable and take a Response object as parameter');
+            }
+        }
+
+        $this->_post_middleware = $middlewares;
+        return $this;
+    }
+
+    /**
+     * @param callable $middleware
+     * @return Router
+     */
+    public function addPreMiddleware(callable $middleware): Router
+    {
+        $this->_pre_middleware[] = $middleware;
+        return $this;
+    }
+
+    /**
+     * @param callable $middleware
+     * @return Router
+     */
+    public function addPostMiddleware(callable $middleware): Router
+    {
+        $this->_post_middleware[] = $middleware;
+        return $this;
+    }
+
+    /**
+     * @param string $url
+     * @return Router
+     */
+    public function setNotFoundUrl(string $url): Router
+    {
+        $this->_notFoundUrl = $url;
+        return $this;
+    }
+
     /**
      * @param string $method
      * @param string $url
@@ -60,6 +132,7 @@ class Router
 
         $notFoundResponse = new HtmlResponse('404 Not Found');
         $notFoundResponse->setHttpCode(404);
+        $notFoundResponse->addHeader('Location: ' . $this->_notFoundUrl);
 
         /** @var Route $route */
         foreach ($routes as $route) {
@@ -84,57 +157,6 @@ class Router
         }
 
         return $notFoundResponse;
-    }
-
-    public function getRouteManager(): RouteManager
-    {
-        return $this->_route_manager;
-    }
-
-    /**
-     * @param array $middlewares
-     * @return Router
-     * @throws RoutingException
-     */
-    public function setPreMiddleware(array $middlewares): self
-    {
-        foreach ($middlewares as $middleware) {
-            if (!\is_callable($middleware)) {
-                throw new RoutingException('A middleware must be callable and return a boolean');
-            }
-        }
-
-        $this->_pre_middleware = $middlewares;
-        return $this;
-    }
-
-    /**
-     * @param array $middlewares
-     * @return Router
-     * @throws RoutingException
-     */
-    public function setPostMiddleware(array $middlewares): self
-    {
-        foreach ($middlewares as $middleware) {
-            if (!\is_callable($middleware)) {
-                throw new RoutingException('A middleware must be callable and take a Response object as parameter');
-            }
-        }
-
-        $this->_post_middleware = $middlewares;
-        return $this;
-    }
-
-    public function addPreMiddleware(callable $middleware): self
-    {
-        $this->_pre_middleware[] = $middleware;
-        return $this;
-    }
-
-    public function addPostMiddleware(callable $middleware): self
-    {
-        $this->_post_middleware[] = $middleware;
-        return $this;
     }
 
     /**
