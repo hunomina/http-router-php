@@ -6,8 +6,6 @@ use hunomina\Http\HttpException;
 use hunomina\Http\Response\HtmlResponse;
 use hunomina\Http\Response\JsonResponse;
 
-require __DIR__.'/../vendor/autoload.php';
-
 class TestController
 {
     /**
