@@ -28,19 +28,27 @@ abstract class Response
     }
 
     /**
-     * @param int $http_code
-     */
-    public function setHttpCode(int $http_code): void
-    {
-        $this->_http_code = $http_code;
-    }
-
-    /**
      * @param mixed $content
      */
     public function setContent($content): void
     {
         $this->_content = $content;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHttpCode(): int
+    {
+        return $this->_http_code;
+    }
+
+    /**
+     * @param int $http_code
+     */
+    public function setHttpCode(int $http_code): void
+    {
+        $this->_http_code = $http_code;
     }
 
     /**
