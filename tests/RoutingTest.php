@@ -50,9 +50,17 @@ class RoutingTest extends TestCase
         $urlAndParam = '/test/1';
         $urlAndParamAndString = '/test/1/lol';
 
-        $this->assertInstanceOf(HtmlResponse::class, $router->request($method, $url));
-        $this->assertInstanceOf(JsonResponse::class, $router->request($method, $urlAndParam));
-        $this->assertInstanceOf(JsonResponse::class, $router->request($method, $urlAndParamAndString));
+        $response = $router->request($method, $url);
+        $this->assertInstanceOf(HtmlResponse::class, $response);
+        $this->assertEquals(200, $response->getHttpCode());
+
+        $response = $router->request($method, $urlAndParam);
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(200, $response->getHttpCode());
+
+        $response = $router->request($method, $urlAndParamAndString);
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(200, $response->getHttpCode());
     }
 
     /**
@@ -68,8 +76,16 @@ class RoutingTest extends TestCase
         $urlAndParam = '/test/1';
         $urlAndParamAndString = '/test/1/lol';
 
-        $this->assertInstanceOf(HtmlResponse::class, $router->request($method, $url));
-        $this->assertInstanceOf(JsonResponse::class, $router->request($method, $urlAndParam));
-        $this->assertInstanceOf(JsonResponse::class, $router->request($method, $urlAndParamAndString));
+        $response = $router->request($method, $url);
+        $this->assertInstanceOf(HtmlResponse::class, $response);
+        $this->assertEquals(200, $response->getHttpCode());
+
+        $response = $router->request($method, $urlAndParam);
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(200, $response->getHttpCode());
+
+        $response = $router->request($method, $urlAndParamAndString);
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(200, $response->getHttpCode());
     }
 }
