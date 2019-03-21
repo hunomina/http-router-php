@@ -2,12 +2,14 @@
 
 namespace hunomina\Http\Response;
 
+use hunomina\Http\HttpStatusCode;
+
 abstract class Response
 {
     /** @var mixed $_content */
     protected $_content;
 
-    /** @var array $_headers */
+    /** @var string[] $_headers */
     protected $_headers = [];
 
     /** @var int $_http_code */
@@ -52,7 +54,7 @@ abstract class Response
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getHeaders(): array
     {
@@ -62,9 +64,9 @@ abstract class Response
     }
 
     /**
-     * @param mixed $header
+     * @param string[] $header
      */
-    public function setHeaders($header): void
+    public function setHeaders(array $header): void
     {
         $this->_headers = $header;
     }
@@ -82,27 +84,6 @@ abstract class Response
      */
     public function getHttpCodeHeader(): string
     {
-        $http_header = 'HTTP/1.0 ';
-        switch ($this->_http_code) {
-            case 301:
-                $http_header .= '301 Move Permanently';
-                break;
-            case 302:
-                $http_header .= '302 Found';
-                break;
-            case 403:
-                $http_header .= '403 Forbidden';
-                break;
-            case 404:
-                $http_header .= '404 Not Found';
-                break;
-            case 500:
-                $http_header .= '500 Internal Server Error';
-                break;
-            default:
-                $http_header .= '200 Ok';
-                break;
-        }
-        return $http_header;
+        return HttpStatusCode::getHttpStatusCodeHeader($this->getHttpCode());
     }
 }
