@@ -59,7 +59,7 @@ abstract class HttpStatusCode
 
     public static function getHttpStatusCodeHeader(int $statusCode): string
     {
-        if (isset($statusCode, self::STATUS_CODE)) {
+        if (isset(self::STATUS_CODE[$statusCode])) {
             return self::HTTP_PROTOCOL . ' ' . $statusCode . ' ' . self::STATUS_CODE[$statusCode];
         }
         return self::HTTP_PROTOCOL . ' ' . $statusCode . ' ' . self::STATUS_CODE[200];
