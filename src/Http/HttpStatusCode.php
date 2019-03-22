@@ -4,17 +4,17 @@ namespace hunomina\Http;
 
 abstract class HttpStatusCode
 {
-    private const HTTP_PROTOCOL = 'HTTP/1.1';
-
     /**
      * @link https://www.ietf.org/assignments/http-status-codes/http-status-codes.xml
      */
     private const STATUS_CODE = [
+        // information
         100 => 'Continue',
         101 => 'Switching Protocol',
         102 => 'Processing',
         103 => 'Early Hints',
 
+        // success
         200 => 'OK',
         201 => 'Created',
         202 => 'Accepted',
@@ -26,6 +26,7 @@ abstract class HttpStatusCode
         208 => 'Already Reported',
         226 => 'IM Used',
 
+        // redirection
         300 => 'Multiple Choices',
         301 => 'Moved Permanently',
         302 => 'Found',
@@ -34,6 +35,7 @@ abstract class HttpStatusCode
         307 => 'Temporary Redirect',
         308 => 'Permanent Redirect',
 
+        // client error
         400 => 'Bad Request',
         401 => 'Unauthorized',
         402 => 'Payment Required',
@@ -63,6 +65,7 @@ abstract class HttpStatusCode
         431 => 'Request Header Fields Too Large',
         451 => 'Unavailable For Legal Reasons',
 
+        // server error
         500 => 'Internal Server Error',
         501 => 'Not Implemented',
         502 => 'Bad Gateway',
@@ -79,9 +82,10 @@ abstract class HttpStatusCode
 
     public static function getHttpStatusCodeHeader(int $statusCode): string
     {
+        $protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.0';
         if (isset(self::STATUS_CODE[$statusCode])) {
-            return self::HTTP_PROTOCOL . ' ' . $statusCode . ' ' . self::STATUS_CODE[$statusCode];
+            return $protocol . ' ' . $statusCode . ' ' . self::STATUS_CODE[$statusCode];
         }
-        return self::HTTP_PROTOCOL . ' ' . $statusCode . ' ' . self::STATUS_CODE[200];
+        return $protocol . ' ' . $statusCode . ' ' . self::STATUS_CODE[200];
     }
 }
